@@ -1,5 +1,8 @@
 namespace GradeBook
 {
+
+    public delegate void GradeAddedDelegate(object sender, EventArgs args);
+
     public class Book
     {
         public Book(string name)
@@ -13,29 +16,35 @@ namespace GradeBook
             set {grades = value;}            
         }
 
+        public string Name
+        {
+            get;
+            set;
+        }
+        
         public List<double> GetGrades()
         {
             return grades;
         }
 
-        public void AddLetterGrade(char letter)
+        public void AddGrade(char letter)
         {
             switch(letter)
             {
                 case 'A':
-                    AddGrade(90);
+                    AddGrade(90.0);
                     break;
                 case 'B':
-                    AddGrade(80);
+                    AddGrade(80.0);
                     break;
                 case 'C':
-                    AddGrade(70);
+                    AddGrade(70.0);
                     break;
                 case 'D':
-                    AddGrade(60);
+                    AddGrade(60.0);
                     break;
                 default:
-                    AddGrade(0);
+                    AddGrade(0.0);
                     break;
             }
         }
@@ -44,13 +53,19 @@ namespace GradeBook
             if (0 <= grade && 100 >= grade)
             {
                 grades.Add(grade);
+                if(GradeAdded != null)
+                {
+                    GradeAdded(this, new EventArgs());
+                }
             }
             else
             {
-                throw new ArgumentException($"Invalid {nameof(grade)}");
+                Console.WriteLine("Please enter a valid grade");
             }
             
         }
+
+        public event GradeAddedDelegate GradeAdded;
 
         public Statistics GetStatistics()
         {
@@ -93,7 +108,8 @@ namespace GradeBook
             return result;
         }
 
+        readonly string category = "Science";
         private List<double> grades;
-        public string Name;
+        public string name;
     }
 }

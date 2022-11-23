@@ -6,10 +6,7 @@ namespace GradeBook
         static void Main(string[] args)
         {
             var book = new Book("Test");
-            book.AddGrade(89.1);
-            book.AddGrade(90.5);
-            book.AddGrade(77.5);
-
+            book.GradeAdded += OnGradeAdded; 
             while (true)
             {
 
@@ -18,22 +15,32 @@ namespace GradeBook
 
                 if (!String.IsNullOrEmpty(input))
                 {
-                    double grade;
-                    bool isNumber = Double.TryParse(input, out grade);
-                    if (isNumber)
-                    {
-                        book.AddGrade(grade);
-                    }
-                    else if (input == "q")
+                    bool isNumber = Double.TryParse(input, out double grade);
+                    if (input == "q")
                     {
                         break;
                     }
+                    if (!isNumber)
+                    {
+                        book.AddGrade(char.Parse(input));
+                    }
                     else
                     {
-                        throw new ArgumentException($"Please enter a valid grade.");   
-                    } 
-                }
-            } 
+
+                        try
+                        {
+                            book.AddGrade(grade);
+                        }
+                        catch(Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);   
+                            Console.WriteLine($"Please enter a valid {nameof(grade)}.");   
+
+                        }
+                    }
+                } 
+            }
+         
 
 
             var stats = book.GetStatistics();
@@ -52,6 +59,10 @@ namespace GradeBook
 
         }
 
+        static void OnGradeAdded(object sender, EventArgs e)
+        {
+            Console.WriteLine("A grade was added.");
+        }
 
     }
 }
