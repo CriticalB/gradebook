@@ -9,7 +9,32 @@ namespace GradeBook
             book.AddGrade(89.1);
             book.AddGrade(90.5);
             book.AddGrade(77.5);
-            
+
+            while (true)
+            {
+
+                 Console.WriteLine("Please enter a grade between 0 and 100 or press \"q\" to quit.");
+                 var input = Console.ReadLine();
+
+                if (!String.IsNullOrEmpty(input))
+                {
+                    double grade;
+                    bool isNumber = Double.TryParse(input, out grade);
+                    if (isNumber)
+                    {
+                        book.AddGrade(grade);
+                    }
+                    else if (input == "q")
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        throw new ArgumentException($"Please enter a valid grade.");   
+                    } 
+                }
+            } 
+
 
             var stats = book.GetStatistics();
             var grades = book.GetGrades();

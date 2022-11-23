@@ -35,7 +35,7 @@ namespace GradeBook.Tests
             book.AddGrade(90.5);
             book.AddGrade(77.3);
 
-            //act
+            //npg
             Statistics result = book.GetStatistics();
 
             //assert
