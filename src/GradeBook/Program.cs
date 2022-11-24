@@ -5,18 +5,17 @@ namespace GradeBook
     {
         static void Main(string[] args)
         {
-            var book = new InMemoryBook("Test");
+            IBook book = new DiskBook("Test");
             book.GradeAdded += OnGradeAdded;
             EnterGrades(book);
 
             var stats = book.GetStatistics();
-            var grades = book.GetGrades();
 
             Console.WriteLine($"The lowest grade is {stats.Low}");
             Console.WriteLine($"The highest grade is {stats.High}");
             Console.WriteLine($"The average grade is {stats.Average:N1}");
             Console.Write("The grades are: ");
-            Console.Write(string.Join(", ", grades));
+            //Console.Write(string.Join(", ", grades));
             /*Console.Write($"The grades are: ");
             foreach(double grade in grades)
             {
