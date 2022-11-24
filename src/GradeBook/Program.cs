@@ -5,11 +5,12 @@ namespace GradeBook
     {
         static void Main(string[] args)
         {
-            IBook book = new DiskBook("Test");
+            var book = new DiskBook("Test2");
             book.GradeAdded += OnGradeAdded;
+            book.GradeAdded += book.stats.OnGradeAddedDoStats;
             EnterGrades(book);
 
-            var stats = book.GetStatistics();
+            var stats = book.stats;
 
             Console.WriteLine($"The lowest grade is {stats.Low}");
             Console.WriteLine($"The highest grade is {stats.High}");
@@ -34,28 +35,21 @@ namespace GradeBook
 
                 if (!String.IsNullOrEmpty(input))
                 {
-                    bool isNumber = Double.TryParse(input, out double grade);
                     if (input == "q")
                     {
                         break;
                     }
-                    if (!isNumber)
+                
+                bool isNumber = Double.TryParse(input, out double grade);
+                bool isChar = Char.TryParse(input, out char letterGrade);
+
+                    if (isChar || isNumber)
                     {
-                        book.AddGrade(char.Parse(input));
+                        book.AddGrade(letterGrade);
                     }
                     else
                     {
-
-                        try
-                        {
-                            book.AddGrade(grade);
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine(ex.Message);
-                            Console.WriteLine($"Please enter a valid {nameof(grade)}.");
-
-                        }
+                        Console.WriteLine($"Please enter a valid {nameof(grade)}.");
                     }
                 }
             }
